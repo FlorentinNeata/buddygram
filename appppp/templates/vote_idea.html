@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Votează o idee</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <h2>Votează o idee</h2>
+        {% if idea_voted %}
+            <p>Ai votat deja o idee.</p>
+        {% else %}
+            <form action="{{ url_for('vote_idea') }}" method="post">
+                <ul>
+                    {% for idea in ideas %}
+                        <li>
+                            {{ idea[1] }}
+                            <button type="submit" name="idea_id" value="{{ idea[0] }}">Vote</button>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </form>
+        {% endif %}
+        <a href="{{ url_for('main_page') }}">Back to main page</a>
+    </div>
+</body>
+</html>

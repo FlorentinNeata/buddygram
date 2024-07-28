@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propune o idee</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <h2>Propune o idee</h2>
+        <form action="{{ url_for('propose_idea') }}" method="post">
+            <label for="idea">Idea:</label>
+            <input type="text" id="idea" name="idea" required>
+            <button type="submit">Submit</button>
+        </form>
+        <a href="{{ url_for('main_page') }}">Back to main page</a>
+    </div>
+</body>
+</html>
