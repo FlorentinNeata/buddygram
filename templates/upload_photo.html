@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Încarcă o poză</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <h2>Încarcă o poză</h2>
+        <form action="{{ url_for('upload_photo') }}" method="post" enctype="multipart/form-data">
+            <label for="photo">Choose photo:</label>
+            <input type="file" id="photo" name="photo" accept="image/*" required>
+            <button type="submit">Upload</button>
+        </form>
+        <a href="{{ url_for('main_page') }}">Back to main page</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote Photo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .photo-item {
+            position: relative;
+            border: 1px solid #ddd;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .photo-item img {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+            max-height: 150px; /* set max height for thumbnail */
+            object-fit: cover;
+        }
+        .photo-item input[type="radio"] {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            transform: scale(1.5);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.9);
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        @media only screen and (max-width: 700px) {
+            .modal-content {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h2>Vote for a Photo</h2>
+        {% if not has_voted %}
+        <form action="{{ url_for('vote_photo') }}" method="post">
+            <div class="photo-grid">
+                {% for photo in photos %}
+                {% set photo_url = url_for('static', filename='uploads/' + photo[1]) %}
+                <div class="photo-item">
+                    <input type="radio" id="photo{{ photo[0] }}" name="photo_id" value="{{ photo[0] }}" required>
+                    <label for="photo{{ photo[0] }}">
+                        <img src="{{ photo_url }}" alt="Photo" onclick="openModal('{{ photo_url }}')">
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="submit">Vote</button>
+        </form>
+        {% else %}
+        <p>You have already voted. Here are the photos:</p>
+        <div class="photo-grid">
+            {% for photo in photos %}
+            {% set photo_url = url_for('static', filename='uploads/' + photo[1]) %}
+            <div class="photo-item">
+                <img src="{{ photo_url }}" alt="Photo" onclick="openModal('{{ photo_url }}')">
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <a href="{{ url_for('main_page') }}">Back to Main Page</a>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="img01">
+    </div>
+
+    <script>
+        function openModal(src) {
+            document.getElementById('myModal').style.display = "block";
+            document.getElementById('img01').src = src;
+        }
+
+        function closeModal() {
+            document.getElementById('myModal').style.display = "none";
+        }
+    </script>
+</body>
+</html>
